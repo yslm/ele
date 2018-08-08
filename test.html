@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no ,viewport-fit=cover" name="viewport">
+  <style>
+    *{
+      padding: 0;
+      margin: 0;
+    }
+    html,body{
+      width: 100%;
+      height: 100%;
+    }
+    .wrap{
+      width: 100%;
+      /*height:100%;*/
+      background-color: #ccc;
+    }
+    .action{
+      position: fixed;
+      background: #d20a0a;
+      width: 100%;
+      /*height:100px;*/
+      text-align: center;
+      bottom: 0;
+      left: 50%;
+      transform: translate3d(-50%, 100%, 0);
+      transition: transform .3s ease-out;
+      /*display: none;*/
+    }
+
+
+  </style>
+</head>
+<body>
+<div class="wrap"></div>
+<button class="btn">按钮</button>
+<!--<button class="close">关闭</button>-->
+<div class="action">
+  <span class="close">关闭</span>
+  <p>sasadasd</p>
+  <p>sasdasdads</p>
+  <p>sasdasdads</p>
+  <p>sasdasdads</p>
+  <p>sasdasdads</p>
+  <p>sasdasdads</p>
+  <p>sasdasdads</p>
+  <p>sasdasdads</p>
+  <p>sasdasdads</p>
+  <p>sasdasdads</p>
+</div>
+
+<script>
+  var btn=document.querySelector('.btn');
+  var act=document.querySelector('.action');
+  var cls=document.querySelector('.close');
+
+  btn.onclick=function () {
+    act.style.transform='translate3d(-50%, 0, 0)'
+  }
+  cls.onclick=function () {
+    act.style.transform='translate3d(-50%, 100%, 0)'
+  }
+
+</script>
+</body>
+</html>

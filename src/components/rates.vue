@@ -1,0 +1,31 @@
+<template>
+  <div class="rates">
+    <p>rates</p>
+    <p>rates</p>
+    <p>rates</p>
+    <p>rates</p>
+    <p>rates</p>
+    <p>rates</p>
+  </div>
+</template>
+<script>
+  export default {
+    name:'rates',
+    data(){
+      return{}
+    },
+    methods:{
+      getdata(){
+        this.testData('ratings').then((res)=>{
+          console.log(res.data);
+        }).catch((err)=>{
+          console.log(err);
+        })
+      }
+    },
+    created(){
+      this.getdata()
+    },
+  }
+</script>
+<style></style>
