@@ -15,20 +15,6 @@
     <div class="view-content">
       <router-view/>
     </div>
-    <div class="footer">
-      <div class="footer-left">
-        <div class="cart-wrap">
-          <div class="cart-circle">
-
-          </div>
-        </div>
-        <div class="footer-money">金额</div>
-        <div class="footer-freight">配送费</div>
-      </div>
-      <div class="footer-right">
-
-      </div>
-    </div>
 
     <div class="modal" v-if="isShowModal">
       <div class="modal-content">
@@ -118,66 +104,8 @@
         text-align: center;
       }
     }
-
     .view-content{
-
     }
-
-    .footer{
-      position: fixed;
-      display: flex;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 0.48rem;
-      padding-left:0.18rem;
-      background-color: #07111B;
-      .footer-left{
-        flex: 1;
-        display: flex;
-        align-items: center;
-        color: #fff;
-        .cart-wrap{
-          position: relative;
-          width: 0.54rem;
-          height: 0.48rem;
-          /*height: 0.54rem;*/
-          /*background-color: red;*/
-          .cart-circle{
-            position: absolute;
-            width: 0.54rem;
-            height: 0.54rem;
-            border-radius: 50%;
-            background-color: #2B333B;
-            border: 0.06rem solid #07111B;
-            top: -0.1rem;
-            left: 0;
-          }
-
-
-        }
-        .footer-money{
-          height: 0.24rem;
-          line-height: 0.24rem;
-          border-right: 1px solid #2B333B;
-          font-weight:bold;
-          /*font-size: 0.16rem;*/
-        }
-        .footer-freight{
-          height: 0.24rem;
-          line-height: 0.24rem;
-          /*font-size:0.1rem;*/
-
-        }
-      }
-      .footer-right{
-        width: 1.05rem;
-        height: 0.48rem;
-        background-color: #2B333B;
-      }
-
-    }
-
 
     /*公共蒙版*/
     .modal {

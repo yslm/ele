@@ -6,12 +6,12 @@
       <i class="iconfont icon-jian"></i>
 
     </button>
-    <input  type="hidden" v-model="count">
-    <span>{{count}}</span>
+    <!--<input  type="hidden" v-model="count">-->
+    <span v-if="this.detailCount.count">{{this.detailCount.count}}</span>
     <button @click="add">
       <i class="iconfont icon-jia"></i>
     </button>
-    <span style="display: none">{{crease}}{</span>
+    <!--<span style="display: none">{{crease}}{</span>-->
   </div>
 </template>
 <script>
@@ -26,23 +26,35 @@
     methods:{
       add(){
         //增加
-        this.count++;
+        if(!this.detailCount.count){
+          this.$set(this.detailCount,'count',1)
+//          return
+        }else{
+          this.detailCount.count++;
+        }
       },
       decrease(){
         //减少
-        if(this.count<=0){
+        if(this.detailCount.count){
+          this.detailCount.count--;
+        }
+
+       /* if(this.count<=0){
           this.count=0;
           return
         }
-        this.count--;
+        this.count--;*/
 
       }
     },
-    computed:{
+  /*  computed:{
       crease(){
+        if(this.detailCount.count>0){
+          return
+        }
         this.$set(this.detailCount,'count',this.count)
       }
-    }
+    }*/
 
   }
 </script>

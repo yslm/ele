@@ -152,58 +152,7 @@ var myMixin = {
 
 
     testData(url){
-      return axios.get('http://192.168.50.73:3003/'+url)
-    },
-
-    //查询接口,根据id查询名字和头像
-    bulkQuery(url, methodStr = 'post', data) {
-      const {userId, token} = this.getUrlParams('userId', 'token');
-      const REST_PREFIX = location.hostname == 'www-cdn.loopslive.com' ? 'https://api.loopslive.com/1.0/op/profile/' : 'https://api-test.loopslive.com/1.0/op/profile/'
-      const baseUrl = REST_PREFIX;
-      // const suffixUrl = `?zone=sg&token=${token}&uid=${userId}`;
-      const suffixUrl = `?zone=sa&token=${token}&uid=${userId}`;
-      const myUrl = baseUrl + url + suffixUrl;
-      // const mydata = JSON.stringify({ ...data, uid: Number(userId) });
-      /*这里不能转json*/
-      const mydata = {...data, uid: Number(userId)};
-      return axios({
-        url: myUrl,
-        method: methodStr,
-        data: mydata,
-      });
-    },
-
-
-    /*第三阶段获取数据*/
-    getStage(url,myData) {
-      const { userId, token } = this.getUrlParams('userId', 'token');
-      // console.log(myData);
-      const stage =myData?{sub_stage:myData}:{};
-      const REST_PREFIX = location.hostname == 'www-cdn.loopslive.com' ? 'http://34.242.108.194:8011/' : 'http://183.62.254.246:8033/';
-      const baseUrl = REST_PREFIX;
-      // const suffixUrl = `?zone=sa&token=${token}&family_id=64`;
-      const suffixUrl = `?zone=sa&token=${token}&uid=${userId}`;
-      const myUrl = baseUrl + url + suffixUrl;
-      return axios.get(myUrl,{
-        params:stage
-      });
-    },
-
-
-    /*第三阶段下注*/
-    betData(url,myData){
-      const { userId, token } = this.getUrlParams('userId', 'token');
-      // console.log(myData);
-      const stage =myData;
-      const REST_PREFIX = location.hostname == 'www-cdn.loopslive.com' ? 'http://34.242.108.194:8011/' : 'http://183.62.254.246:8033/';
-
-      const baseUrl = REST_PREFIX;
-      // const suffixUrl = `?zone=sa&token=${token}&family_id=64`;
-      const suffixUrl = `?zone=sa&token=${token}&uid=${userId}`;
-      const myUrl = baseUrl + url + suffixUrl;
-      return axios.get(myUrl,{
-        params:myData||{}
-      });
+      return axios.get('http://localhost:3003/'+url)
     },
 
 
