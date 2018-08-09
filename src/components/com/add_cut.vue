@@ -2,9 +2,15 @@
 
 <template>
   <div class="add-cut">
-    <button @click="decrease">-</button>
-    <input type="text" v-model="count">
-    <button @click="add">+</button>
+    <button @click="decrease">
+      <i class="iconfont icon-jian"></i>
+
+    </button>
+    <input  type="hidden" v-model="count">
+    <span>{{count}}</span>
+    <button @click="add">
+      <i class="iconfont icon-jia"></i>
+    </button>
     <span style="display: none">{{crease}}{</span>
   </div>
 </template>
@@ -40,4 +46,8 @@
 
   }
 </script>
-<style></style>
+<style>
+  @import "../fonts/iconfont.css";
+
+
+</style>

@@ -152,7 +152,7 @@ var myMixin = {
 
 
     testData(url){
-      return axios.get('http://192.168.1.101:3003/'+url)
+      return axios.get('http://192.168.50.73:3003/'+url)
     },
 
     //查询接口,根据id查询名字和头像

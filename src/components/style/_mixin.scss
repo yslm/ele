@@ -1,4 +1,4 @@
-@mixin border-1px($color){
+@mixin border-bottom($color){
   position: relative;
   &::after{
     position: absolute;

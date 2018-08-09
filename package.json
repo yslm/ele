@@ -8,7 +8,7 @@
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "build": "node build/build.js",
-    "json": "json-server data.json --port 3003 --host 192.168.1.101"
+    "json": "json-server data.json --port 3003 --host 192.168.50.73"
   },
   "dependencies": {
     "mint-ui": "^2.2.13",
