@@ -11,6 +11,7 @@
     "json": "json-server data.json --port 3003 --host localhost"
   },
   "dependencies": {
+    "better-scroll": "^1.12.6",
     "mint-ui": "^2.2.13",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"

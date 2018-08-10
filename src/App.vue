@@ -30,6 +30,7 @@
 
 <script>
 
+
   import StarEl from './components/star.vue'
   export default {
     name: 'App',
@@ -47,10 +48,15 @@
         this.testData('seller').then((res)=>{
           console.log(res.data);
           this.profile=res.data;
+          //执行初始化函数
+
+
         }).catch((err)=>{
           console.log(err);
         })
-      }
+      },
+
+
     },
     created(){
       this.getdata()
@@ -63,8 +69,13 @@
 <style lang="scss" scoped>
 @import "./components/style/mixin";
 @import "./components/style/border";
+
+
   #app {
     text-align: center;
+    position: relative;
+    /*display: flex;*/
+    /*flex-direction: column;*/
 
 
     .header{
@@ -105,6 +116,19 @@
       }
     }
     .view-content{
+      position: absolute;
+      top: 1.74rem;
+      bottom: 0;
+      left: 0;
+      padding-bottom: 0.48rem;
+      overflow: hidden;
+
+      //这个是包裹下面内容的容器
+      /*flex: 1;*/
+      /*height: 5rem;*/
+      /*overflow: scroll;*/
+
+
     }
 
     /*公共蒙版*/

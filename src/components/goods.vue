@@ -1,12 +1,17 @@
 <template>
-  <div class="goods-wrap">
-    <div class="goods" v-if="goods">
-      <div class="goods-left">
-        <p class="left-item" v-for="val in goods">{{val.name}}</p>
+  <div class="goods">
+
+    <div class="menu-wrap">
+      <div class="goods-left" >
+        <p class="left-item" v-for="(val,index) in goods"
+           @click=selectMenu(index,$event)
+           :class="{current:currentIndex === index}"
+        >{{val.name}}</p>
       </div>
-      <div class="goods-right">
-        <ul>
-          <li v-for="val in goods">
+    </div>
+    <div class="goods-wrap">
+        <ul class="goods-right">
+          <li v-for="val in goods" class="good-list-hook">
             <p class="goods-title">{{val.name}}</p>
             <div v-for="item in val.foods" class="foods-list-wrap border-1px">
               <div class="food-list">
@@ -28,28 +33,19 @@
             </div>
           </li>
         </ul>
-      </div>
     </div>
 
-    <div class="cart-list">
-      //购物车列表
-      <CartListEl :goodsList="listArr"></CartListEl>
-<!--
-      <div class="title">
-        <span>购物车</span>
-        <button>清空</button>
-      </div>
-      <ul class="list-wrap">
-        <li class="list-item" v-for="(item,index) in listArr">
-          <p>{{item.name}}</p>
-          <p>{{item.price}}</p>
-          <lo-add :detailCount="item" key="index.info"></lo-add>
 
-        </li>
-      </ul>-->
-    </div>
+        <transition name="fade">
+          <div class="cart-list-wrap" v-show="showCart">
+            <div class="cart">
+              <CartListEl :goodsList="listArr"></CartListEl>
+            </div>
+          </div>
+        </transition>
 
-    <div class="footer">
+
+    <div class="footer" @click="showCartList">
       <div class="footer-left">
         <div class="cart-wrap">
           <div class="cart-circle">
@@ -68,15 +64,17 @@
 
 </template>
 <script>
-
+  import BScroll from 'better-scroll'
   import CartListEl from './cartList.vue'
   export default {
     name:'goods',
     data(){
       return{
         goods:"",
-        listArr:[]//购物车列表
-
+        listArr:[],//购物车列表
+        showCart:false,//是否显示购物车列表
+        listHeight:[],//存放右侧列表的每一档的高度
+        scrollY:0
       }
     },
     components:{
@@ -86,28 +84,43 @@
       //计算总金额
       totalMoney(){
        //遍历数据
-      if(this.goods){
-        let total=0,
-          listArr=[];
+        if(this.goods){
+          let total=0,
+            listArr=[];
 
-        this.goods.forEach(function (item,index) {
-//          console.log(item,index);
-          item.foods.forEach(function (val,index) {
+          this.goods.forEach(function (item,index) {
+  //          console.log(item,index);
+            item.foods.forEach(function (val,index) {
 
-            if(val.count){
-              total+=val.count*val.price;
-                listArr.push(val);
-            }
+              if(val.count){
+                total+=val.count*val.price;
+                  listArr.push(val);
+              }
+            })
+
           })
 
-        })
+          this.listArr=listArr;
 
-        this.listArr=listArr;
-
-        return total;
-      }
+          return total;
+        }
 
       },
+
+
+      currentIndex() {
+        for(let i=0;i< this.listHeight.length;i++) {
+          let height1 = this.listHeight[i];
+          let height2 = this.listHeight[i+1];
+
+
+
+          if(!height2 || (this.scrollY >= height1 && this.scrollY < height2)){
+            return i;
+          }
+        }
+        return 0;
+      }
     },
     methods:{
       getdata(){
@@ -115,14 +128,76 @@
           console.log(res.data);
           this.goods=res.data;
           console.log(this.goods);
+          this.$nextTick(()=>{
+            this.init();
+            this.calculateHeight();
+          })
         }).catch((err)=>{
           console.log(err);
         })
+      },
+     init(){
+//        let result= await this.testData('goods');
+        let menuWrap = document.querySelector('.menu-wrap'),
+            goodWrap =document.querySelector('.goods-wrap');
+
+        console.log(menuWrap,goodWrap,'hahaha');
+        this.menuScroll = new BScroll(menuWrap,{click:true});
+        this.goodScroll =new BScroll(goodWrap,{
+           probeType:3
+          });
+
+        this.goodScroll.on('scroll',(pos)=>{
+          //监控右侧列表的滚动事件
+          this.scrollY=Math.abs(Math.round(pos.y));
+          console.log(this.scrollY);
+        })
+      },
+
+      //计算右侧每一档的高度
+      calculateHeight() {
+//        let foodList = document.querySelector('.goods-wrap').getElementsByClassName("good-list-hook");
+        let foodList = document.querySelectorAll(".good-list-hook");
+        let height = 0;
+        this.listHeight.push(height);
+        for(let i=0;i<foodList.length;i++) {
+          let item = foodList[i];
+          height += item.clientHeight;//因为这个clientHeight只是每个元素
+          console.log(height,'高度');
+          this.listHeight.push(height);
+        }
+      },
+
+      showCartList(){
+       //判断
+
+        if(!this.totalMoney) return
+        console.log(this.totalMoney,'点击');
+        this.showCart=!this.showCart;
+
+      },
+
+      //左侧菜单栏的点击联动
+
+      selectMenu(index){
+        //记录点击的是第几个
+        if(!event._constructed) {
+          return ;
+        }
+        let foodList = document.querySelector('.goods-wrap').getElementsByClassName("good-list-hook");
+        let el = foodList[index];
+        this.goodScroll.scrollToElement(el,300);
       }
     },
     created(){
       this.getdata()
     },
+
+    mounted(){
+      this.Event.$on('clearCart',()=>{
+        this.showCart=false;
+      })
+    }
   }
 
 </script>
@@ -131,19 +206,25 @@
   @import "./style/border";
 
   .goods{
+    height: 100%;
+    display:flex;
     color: #07111B;
     font-size: 0.12rem;
-    display: flex;
-    .goods-left{
+    overflow: hidden;
+    .menu-wrap{
       width: 0.8rem;
+      height: 100%;
       .left-item{
         height: 0.54rem;
         background-color: #F3F5F7;
+        &.current{
+          background-color: red;
+        }
       }
-
     }
-    .goods-right{
+    .goods-wrap{
       flex: 1;
+      height: 100%;
 
       .goods-title{
         height: 0.26rem;
@@ -197,10 +278,11 @@
       }
     }
 
-
   }
+
   .footer{
-    position: fixed;
+    position: absolute;
+    z-index: 100;
     display: flex;
     left: 0;
     bottom: 0;
@@ -254,6 +336,46 @@
       background-color: #2B333B;
     }
 
+  }
+
+  .cart-list-wrap{
+    width: 100%;
+    //购物车列表
+    position: fixed;
+    z-index: 20;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(10, 43, 58, 0.5);
+  }
+
+
+  .cart{
+    position: absolute;
+    z-index: 21;
+    /*background: #d20a0a;*/
+    width: 100%;
+    /*max-height: 2rem;*/
+    /*overflow: scroll;*/
+    text-align: center;
+    /*padding-bottom: 0.48rem;*/
+    bottom: 0;
+    transform: translate3d(0, 0%, 0);
+  }
+  .fade-enter-active, .fade-leave-active {
+    transition: all .5s;
+    .cart{
+      transition: all .5s;
+    }
+  }
+
+  .fade-enter, .fade-leave-to {
+    background-color: rgba(10, 43, 58, 0.1);
+  }
+  .fade-enter, .fade-leave-to {
+    .cart{
+      transform:translate3d(0, 100%, 0);
+    }
   }
 
 </style>
